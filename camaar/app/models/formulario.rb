@@ -1,14 +1,12 @@
 class Formulario < ApplicationRecord
-  has_many :questao, dependant: :destroy
-  belongs_to :administrador
+  belongs_to :docente
+  belongs_to :template
+  has_many :classes
 
-  validates :turmas, presence: true
+  validates :resultados, presence: true
   validates :dataDeTermino, presence: true
-  validates :Resultados, presence: true
 
   validate :dataDeTermino_in_future
-
-  accepts_nested_attributes_for :questao, reject_if: :all_blank, allow_destroy: true
 
   private
 

@@ -1,50 +1,56 @@
 class DicentesController < ApplicationController
-  before_action :set_dicente, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
 
+  # GET /dicentes
   def index
     @dicentes = Dicente.all
   end
 
+  # GET /dicentes/:id
   def show
+    @dicente = Dicente.find(params[:id])
   end
 
+  # GET /dicentes/new
   def new
     @dicente = Dicente.new
   end
 
-  def edit
-  end
-
+  # POST /dicentes
   def create
     @dicente = Dicente.new(dicente_params)
-
     if @dicente.save
-      redirect_to @dicente, notice: 'Dicente criado com sucesso.'
+      redirect_to @dicente, notice: 'Dicente was successfully created.'
     else
       render :new
     end
   end
 
+  # GET /dicentes/:id/edit
+  def edit
+    @dicente = Dicente.find(params[:id])
+  end
+
+  # PATCH/PUT /dicentes/:id
   def update
+    @dicente = Dicente.find(params[:id])
     if @dicente.update(dicente_params)
-      redirect_to @dicente, notice: 'Dicente atualizado com sucesso.'
+      redirect_to @dicente, notice: 'Dicente was successfully updated.'
     else
       render :edit
     end
   end
 
+  # DELETE /dicentes/:id
   def destroy
+    @dicente = Dicente.find(params[:id])
     @dicente.destroy
-    redirect_to dicentes_url, notice: 'Dicente excluído com sucesso.'
+    redirect_to dicientes_url, notice: 'Dicente was successfully destroyed.'
   end
 
   private
 
-  def set_dicente
-    @dicente = Dicente.find(params[:id])
-  end
-
   def dicente_params
-    params.require(:dicente).permit(:nome, :senha, :matricula, :turma_id)
+    params.require(:dicente).permit(:nome, :email, :password, :type, :usuario, :formacao, :matricula, :curso)
   end
 end

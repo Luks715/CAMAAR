@@ -1,53 +1,71 @@
 class FormulariosController < ApplicationController
+  before_action :set_formulario, only: [:show, :edit, :update, :destroy]
+
+  # GET /formularios
   def index
     @formularios = Formulario.all
   end
 
+  # GET /formularios/1
   def show
-    @formulario = Formulario.find(params[:id])
+    @classes = @formulario.classes
+    @template = @formulario.template
   end
 
+  # GET /formularios/new
   def new
     @formulario = Formulario.new
-    @templates = Template.all
+    @classes_disponiveis = current_docente.classes
+    @templates_disponiveis = current_docente.templates
   end
 
+  # GET /formularios/1/edit
+  def edit
+    @classes_disponiveis = current_docente.classes
+    @templates_disponiveis = current_docente.templates
+  end
+
+  # POST /formularios
   def create
     @formulario = Formulario.new(formulario_params)
-    @formulario.administrador = current_administrador
+    @formulario.classes << current_docente.classes.find(params[:formulario][:classe_ids]) if params[:formulario][:classe_ids].present?
+
     if @formulario.save
-      redirect_to @formulario
+      redirect_to @formulario, notice: 'Formulário criado com sucesso.'
     else
-      @templates = Template.all
-      render 'new'
+      @classes_disponiveis = current_docente.classes
+      @templates_disponiveis = current_docente.templates
+      render :new
     end
   end
 
-  def edit
-    @formulario = Formulario.find(params[:id])
-  end
-
+  # PATCH/PUT /formularios/1
   def update
-    @formulario = Formulario.find(params[:id])
+    @formulario.classes.clear
+    @formulario.classes << Classe.find(params[:formulario][:classe_ids]) if params[:formulario][:classe_ids].present?
+
     if @formulario.update(formulario_params)
-      redirect_to @formulario
+      redirect_to @formulario, notice: 'Formulário atualizado com sucesso.'
     else
-      render 'edit'
+      @classes_disponiveis = current_docente.classes
+      @templates_disponiveis = current_docente.templates
+      render :edit
     end
   end
 
+  # DELETE /formularios/1
   def destroy
-    @formulario = Formulario.find(params[:id])
     @formulario.destroy
-    redirect_to formularios_path
+    redirect_to formularios_url, notice: 'Formulário excluído com sucesso.'
   end
 
   private
+    def set_formulario
+      @formulario = Formulario.find(params[:id])
+    end
 
-  def formulario_params
-    params.require(:formulario).permit(
-      :turmas, :dataDeTermino,{ Resultados: {} },
-      questaos_attributes: [:template_id, :pergunta, :alternativas, :pontos, :fatorDeCorrecao, :alternativaCorreta]
-    )
-  end
+    # Only allow a trusted parameter "white list" through.
+    def formulario_params
+      params.require(:formulario).permit(:resultados, :dataDeTermino, :docente_id, :template_id, classe_ids: [])
+    end
 end

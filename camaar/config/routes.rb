@@ -9,14 +9,15 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   devise_for :users
-  devise_for :docente
-  devise_for :dicente
+  devise_for :docentes
+  devise_for :dicentes
 
   #cria rotas para os métodos nos controllers de formulários, templates, alunos e turmas
   resources :formularios
   resources :templates
-  resources :alunos
-  resources :turmas
+  resources :classes
+  resources :disciplinas
+  resources :tipos
 
   # Define a rota para a página de login como a root
   devise_scope :user do
