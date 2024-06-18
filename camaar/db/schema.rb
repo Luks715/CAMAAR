@@ -10,25 +10,47 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_16_221809) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_18_170539) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "classes", force: :cascade do |t|
+    t.string "class_code", null: false
+    t.string "semestre", null: false
+    t.string "horario", null: false
+    t.string "dicentes", default: [], array: true
+    t.string "formularios", default: [], array: true
+    t.bigint "docente_id", null: false
+    t.bigint "disciplina_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["disciplina_id"], name: "index_classes_on_disciplina_id"
+    t.index ["docente_id"], name: "index_classes_on_docente_id"
+  end
+
   create_table "dicentes", force: :cascade do |t|
-    t.string "matricula", null: false
     t.string "curso", null: false
-    t.string "turma", default: [], array: true
+    t.string "matricula", null: false
+    t.string "classes", default: [], array: true
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_dicentes_on_user_id"
   end
 
+  create_table "disciplinas", force: :cascade do |t|
+    t.string "codigo", null: false
+    t.string "nome", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "docentes", force: :cascade do |t|
     t.string "departamento", null: false
     t.string "formularios", default: [], array: true
     t.string "templates", default: [], array: true
-    t.string "turmas", default: [], array: true
+    t.string "tipos", default: [], array: true
+    t.string "classes", default: [], array: true
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -36,54 +58,47 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_16_221809) do
   end
 
   create_table "formularios", force: :cascade do |t|
-    t.string "nome", null: false
-    t.string "turmas", default: [], array: true
     t.date "dataDeTermino", null: false
+    t.string "classes", default: [], array: true
     t.jsonb "resultados", default: {}
     t.bigint "docente_id", null: false
-    t.bigint "questao_id"
+    t.bigint "template_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["docente_id"], name: "index_formularios_on_docente_id"
-    t.index ["questao_id"], name: "index_formularios_on_questao_id"
+    t.index ["template_id"], name: "index_formularios_on_template_id"
   end
 
   create_table "questaos", force: :cascade do |t|
     t.string "pergunta", null: false
-    t.jsonb "alternativas", default: {}, null: false
+    t.string "alternativas", default: [], null: false, array: true
     t.decimal "pontos", precision: 10, scale: 2, null: false
     t.decimal "fatorDeCorrecao", precision: 10, scale: 2, default: "0.0", null: false
     t.string "alternativaCorreta", null: false
-    t.bigint "template_id", null: false
+    t.bigint "tipo_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "formulario_id"
-    t.index ["formulario_id"], name: "index_questaos_on_formulario_id"
-    t.index ["template_id"], name: "index_questaos_on_template_id"
+    t.index ["tipo_id"], name: "index_questaos_on_tipo_id"
   end
 
   create_table "templates", force: :cascade do |t|
     t.string "nome", null: false
-    t.integer "numeroDeAlternativas", null: false
-    t.boolean "discursiva", null: false
-    t.boolean "fatorDeCorrecao", null: false
+    t.string "questaos", default: [], null: false, array: true
     t.bigint "docente_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["docente_id"], name: "index_templates_on_docente_id"
   end
 
-  create_table "turmas", force: :cascade do |t|
-    t.string "codigo", null: false
-    t.string "nome_materia", null: false
-    t.string "semestre", null: false
-    t.string "horario", null: false
-    t.string "dicentes", default: [], array: true
-    t.string "formularios", default: [], array: true
+  create_table "tipos", force: :cascade do |t|
+    t.string "nome", null: false
+    t.integer "numeroDeAlternativas", null: false
+    t.boolean "discursiva?", null: false
+    t.boolean "fatorDeCorrecao?", null: false
     t.bigint "docente_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["docente_id"], name: "index_turmas_on_docente_id"
+    t.index ["docente_id"], name: "index_tipos_on_docente_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -95,14 +110,21 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_16_221809) do
     t.string "formacao", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "classes", "disciplinas"
+  add_foreign_key "classes", "docentes"
   add_foreign_key "dicentes", "users"
   add_foreign_key "docentes", "users"
   add_foreign_key "formularios", "docentes"
-  add_foreign_key "formularios", "questaos"
-  add_foreign_key "questaos", "formularios"
-  add_foreign_key "questaos", "templates"
+  add_foreign_key "formularios", "templates"
+  add_foreign_key "questaos", "tipos"
   add_foreign_key "templates", "docentes"
-  add_foreign_key "turmas", "docentes"
+  add_foreign_key "tipos", "docentes"
 end
