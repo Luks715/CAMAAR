@@ -13,8 +13,6 @@ class TemplatesController < ApplicationController
   # GET /templates/new
   def new
     @template = Template.new
-    @questao = @template.questaos.build
-    @alternativa = @questao.alternativas.build
   end
 
   # GET /templates/1/edit

@@ -15,7 +15,7 @@
 
     <span class="header-text">Gerenciamento - Templates</span>
 
-    <%= form_tag(templates_path, method: "get", class: "search-bar", id: "nome_template") do %>
+    <%= form_tag(templates_path, method: "get", class: "search-bar") do %>
         <%= text_field_tag :nome, params[:nome], placeholder: "Buscar por nome do template", class: "search-bar-input" %>
         <%= submit_tag "&#128269;".html_safe, class: "search-icon" %>
     <% end %>

@@ -12,12 +12,12 @@
       </div>
     </div>
     <span class="header-text">Avaliações</span>
-    <div class="search-bar">
-      <%= form_tag(home_dicente_path, method: :get) do %>
-        <%= text_field_tag :search, params[:search], placeholder: "Pesquisar por nome do formulário" %>
-        <%= submit_tag "Pesquisar", class: "search-icon" %>
-      <% end %>
-    </div>
+   
+    <%= form_tag(home_dicente_path, method: :get, class: "search-bar") do %>
+      <%= text_field_tag :search, params[:search], placeholder: "Pesquisar por nome do formulário", class: "search-bar-input" %>
+      <%= submit_tag "&#128269;".html_safe, class: "search-icon" %>
+    <% end %>
+
     <button class="user-button" id="userButton"><%=current_user.nome[0].upcase%></button>
     <div class="sign-out" id="signOut">
       <%= link_to "Sair", destroy_user_session_path, method: :delete %>

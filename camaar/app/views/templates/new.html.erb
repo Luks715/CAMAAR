@@ -13,6 +13,8 @@
       <%= form_for @alternativa, url: template_questao_alternativas_path(@template, @questao) do |alternativa_form| %>
         <%= alternativa_form.label :texto, "Alternativa da questão" %>
         <%= alternativa_form.text_field :texto, required: true%>
+
+        <%= questao_form.submit "Adicionar Alternativa" %>
       <%end%>
 
       <%= questao_form.submit "Adicionar Questão" %>

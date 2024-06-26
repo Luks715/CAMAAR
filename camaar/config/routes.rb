@@ -41,8 +41,8 @@ Rails.application.routes.draw do
   end
 
   resources :templates do
-    resources :questaos, except: [:index] do
-      resources :alternativas, except: [:index]
+    resources :questaos do
+      resources :alternativas
     end
   end
 

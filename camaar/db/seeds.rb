@@ -73,28 +73,28 @@ end
   turma1.dicentes << fulano
 
   template1 = Template.create!(
-  nome: 'Template de Exemplo',
-  docente: Docente.find_by(user_id: User.find_by(nome: "administrador")),
-  questaos_attributes: [
-    {
-      pergunta: 'Você confirma?',
-      tipo: Tipo.find_by(nome: 'confirmação'),
-      alternativas_attributes: [
-        { texto: 'Confirmo' },
-      ]
-    },
-    {
-      pergunta: 'Esta é uma questão de múltipla escolha??',
-      tipo: Tipo.find_by(nome: 'múltipla escolha'),
-      alternativas_attributes: [
-        { texto: 'sim' },
-        { texto: 'si' },
-        { texto: 'oui' },
-        { texto: 'yes' }
-      ]
-    }
-  ]
-)
+    nome: 'Template de Exemplo',
+    docente: Docente.find_by(user_id: User.find_by(nome: "administrador")),
+    questaos_attributes: [
+      {
+        pergunta: 'Você confirma?',
+        tipo: Tipo.find_by(nome: 'confirmação'),
+        alternativas_attributes: [
+          { texto: 'Confirmo' },
+        ]
+      },
+      {
+        pergunta: 'Esta é uma questão de múltipla escolha??',
+        tipo: Tipo.find_by(nome: 'múltipla escolha'),
+        alternativas_attributes: [
+          { texto: 'sim' },
+          { texto: 'si' },
+          { texto: 'oui' },
+          { texto: 'yes' }
+        ]
+      }
+    ]
+  )
 
   provasDerivadas = Formulario.find_or_create_by(
     nome: 'Prova de Derivadas',

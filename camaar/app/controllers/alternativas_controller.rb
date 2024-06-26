@@ -1,9 +1,10 @@
 class AlternativasController < ApplicationController
+  before_action :get_questao
   before_action :set_alternativa, only: [:show, :edit, :update, :destroy]
 
   # GET /alternativas
   def index
-    @alternativas = Alternativa.all
+    @alternativas = @questao.alternativas
   end
 
   # GET /alternativas/1
@@ -12,7 +13,7 @@ class AlternativasController < ApplicationController
 
   # GET /alternativas/new
   def new
-    @alternativa = Alternativa.new
+    @alternativa = @questao.alternativas.build
   end
 
   # GET /alternativas/1/edit
@@ -21,7 +22,7 @@ class AlternativasController < ApplicationController
 
   # POST /alternativas
   def create
-    @alternativa = Alternativa.new(alternativa_params)
+    @alternativa = @questao.alternativas.build(alternativa_params)
 
     if @alternativa.save
       redirect_to @alternativa, notice: 'Alternativa was successfully created.'
@@ -49,6 +50,10 @@ class AlternativasController < ApplicationController
 
     def set_alternativa
       @alternativa = Alternativa.find(params[:id])
+    end
+
+    def get_questao
+      @questao = Questao.find(params[:questao_id])
     end
 
     def alternativa_params

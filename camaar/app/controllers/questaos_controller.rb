@@ -1,9 +1,10 @@
 class QuestaosController < ApplicationController
+  before_action :get_template
   before_action :set_questao, only: [:show, :edit, :update, :destroy]
 
   # GET /questaos
   def index
-    @questaos = Questao.all
+    @questaos = @template.questaos
   end
 
   # GET /questaos/1
@@ -12,8 +13,7 @@ class QuestaosController < ApplicationController
 
   # GET /questaos/new
   def new
-    @questao = Questao.new
-    @questao.alternativas.build
+    @questao = @template.questaos.build
     @tipos = Tipo.all
   end
 
@@ -23,7 +23,7 @@ class QuestaosController < ApplicationController
 
   # POST /questaos
   def create
-    @questao = Questao.new(questao_params)
+    @questao = @template.questaos.build(questao_params)
 
     if @questao.save
       redirect_to @questao, notice: 'Questao was successfully created.'
@@ -35,7 +35,7 @@ class QuestaosController < ApplicationController
   # PATCH/PUT /questaos/1
   def update
     if @questao.update(questao_params)
-      redirect_to @questao, notice: 'Questao was successfully updated.'
+      redirect_to @template, notice: 'Questao was successfully updated.'
     else
       render :edit
     end
@@ -49,8 +49,12 @@ class QuestaosController < ApplicationController
 
   private
 
+    def get_template
+      @template = Template.find(params[:template_id])
+    end
+
     def set_questao
-      @questao = Questao.find(params[:id])
+      @questao = @template.questaos.find(params[:id])
     end
 
     def questao_params
