@@ -43,6 +43,6 @@ class TiposController < ApplicationController
   private
 
   def tipo_params
-    params.require(:tipo).permit(:numeroDeAlternativas, :discursiva?, :nome, :fatorDeCorreção?)
+    params.require(:tipo).permit(:nome, :numeroDeAlternativas, :discursiva)
   end
 end

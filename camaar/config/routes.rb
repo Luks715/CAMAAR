@@ -21,7 +21,6 @@ Rails.application.routes.draw do
   get '/formularios/:id/responder', to: 'formularios#responder', as: 'responder_formulario'
 
   #cria rotas para os métodos nos controllers de formulários, templates, alunos e turmas
-  resources :templates
   resources :formularios
   resources :docentes
   resources :dicentes
@@ -38,6 +37,12 @@ Rails.application.routes.draw do
     collection do
       get :import
       post :import
+    end
+  end
+
+  resources :templates do
+    resources :questaos, except: [:index] do
+      resources :alternativas, except: [:index]
     end
   end
 

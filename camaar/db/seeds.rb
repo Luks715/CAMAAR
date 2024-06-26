@@ -4,11 +4,11 @@
 #
 # Example:
 
-Tipo.create([
-  { nome: 'confirmação', numeroDeAlternativas: 1, discursiva?: false},
-  { nome: 'satisfação', numeroDeAlternativas: 5, discursiva?: false},
-  { nome: 'múltipla escolha', numeroDeAlternativas: 4, discursiva?: false },
-  { nome: 'discursiva', numeroDeAlternativas: 0, discursiva?: true}
+Tipo.create!([
+  { nome: 'confirmação', numeroDeAlternativas: 1, discursiva: 'false'},
+  { nome: 'satisfação', numeroDeAlternativas: 5, discursiva: 'false'},
+  { nome: 'múltipla escolha', numeroDeAlternativas: 4, discursiva: 'false'},
+  { nome: 'aberta', numeroDeAlternativas: 0, discursiva: 'true'},
 ])
 
 Disciplina.create!(
@@ -73,9 +73,28 @@ end
   turma1.dicentes << fulano
 
   template1 = Template.create!(
-    nome: 'Satisfação de Calculo 1',
-    docente_id: Docente.find_by(user_id: User.find_by(nome: "administrador").id).id,
-  )
+  nome: 'Template de Exemplo',
+  docente: Docente.find_by(user_id: User.find_by(nome: "administrador")),
+  questaos_attributes: [
+    {
+      pergunta: 'Você confirma?',
+      tipo: Tipo.find_by(nome: 'confirmação'),
+      alternativas_attributes: [
+        { texto: 'Confirmo' },
+      ]
+    },
+    {
+      pergunta: 'Esta é uma questão de múltipla escolha??',
+      tipo: Tipo.find_by(nome: 'múltipla escolha'),
+      alternativas_attributes: [
+        { texto: 'sim' },
+        { texto: 'si' },
+        { texto: 'oui' },
+        { texto: 'yes' }
+      ]
+    }
+  ]
+)
 
   provasDerivadas = Formulario.find_or_create_by(
     nome: 'Prova de Derivadas',
@@ -85,5 +104,6 @@ end
     dataDeTermino: Date.new(2024, 7, 1)
   )
   provasDerivadas.turmas << turma1
+  turma1.formularios << provasDerivadas
 
   puts 'Seed percorrida com sucesso'

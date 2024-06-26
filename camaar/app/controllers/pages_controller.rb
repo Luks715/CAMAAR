@@ -25,7 +25,7 @@ class PagesController < ApplicationController
 
       # Aqui você pode acessar os formulários através das classes
       # Exemplo de como acessar os formulários de cada classe:
-      @formularios = @classes.flat_map { |classe| classe.formularios }
+      @formularios = @turmas.flat_map { |turma| turma.formularios }
     else
       @turmas = []
       @templates = []

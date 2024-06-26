@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_21_092341) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_19_210943) do
   create_table "alternativas", force: :cascade do |t|
     t.integer "questao_id", null: false
     t.string "texto", null: false
@@ -87,16 +87,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_21_092341) do
   end
 
   create_table "resultados", force: :cascade do |t|
-    t.integer "dicente_id", null: false
     t.integer "formulario_id", null: false
+    t.integer "template_id", null: false
+    t.integer "questao_id", null: false
+    t.integer "alternativa_id", null: false
     t.integer "resposta_id", null: false
-    t.integer "questao_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["dicente_id"], name: "index_resultados_on_dicente_id"
+    t.index ["alternativa_id"], name: "index_resultados_on_alternativa_id"
     t.index ["formulario_id"], name: "index_resultados_on_formulario_id"
     t.index ["questao_id"], name: "index_resultados_on_questao_id"
     t.index ["resposta_id"], name: "index_resultados_on_resposta_id"
+    t.index ["template_id"], name: "index_resultados_on_template_id"
   end
 
   create_table "templates", force: :cascade do |t|
@@ -110,7 +112,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_21_092341) do
   create_table "tipos", force: :cascade do |t|
     t.string "nome", null: false
     t.integer "numeroDeAlternativas", null: false
-    t.boolean "discursiva?", null: false
+    t.string "discursiva", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -170,10 +172,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_21_092341) do
   add_foreign_key "questaos", "tipos"
   add_foreign_key "respostas", "questaos"
   add_foreign_key "respostas", "resultados"
-  add_foreign_key "resultados", "dicentes"
+  add_foreign_key "resultados", "alternativas"
   add_foreign_key "resultados", "formularios"
   add_foreign_key "resultados", "questaos"
   add_foreign_key "resultados", "resposta", column: "resposta_id"
+  add_foreign_key "resultados", "templates"
   add_foreign_key "templates", "docentes"
   add_foreign_key "turmas", "disciplinas"
   add_foreign_key "turmas", "docentes"

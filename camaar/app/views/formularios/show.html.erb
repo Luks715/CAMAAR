@@ -1,30 +1,17 @@
-<h1>Resultados do Formulário <%= @formulario.nome %></h1>
+<body>
+  <%@template = @formulario.template%>
+  <% @resultados = Resultado.where(formulario: @formulario) %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Dicente</th>
-      <th>Classe</th>
-      <th>Nota</th>
-    </tr>
-  </thead>
+  <h1>Resultados do Formulário <%= @formulario.nome %></h1>
+  <h1> <%= Template: @template.nome %></h1>
 
-  <tbody>
-    <% total_notas = 0 %>
-    <% @resultados.each do |resultado| %>
-      <% total_notas += resultado.nota %>
-      <tr>
-        <td><%= resultado.dicente.nome %></td>
-        <td><%= resultado.classe.materia %></td>
-        <td><%= resultado.nota %></td>
-      </tr>
-    <% end %>
-
-    <% if @resultados.present? %>
-      <tr>
-        <td colspan="2"><strong>Média das Notas:</strong></td>
-        <td><%= (total_notas / @resultados.size) %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+  <% @template.questaos.each do |questao|%>
+    <h2><%= questao.pergunta %></h2>
+    <ul>
+      <% questao.alternativas.each do |alternativa| %>
+         <% resultado = @resultados.find { |r| r.alternativa_id == alternativa.id } %>
+        <li><%= alternativa.texto %> - Resultados: <%= resultado.present? ? resultado.resposta.quantidade_de_alunos : 0 %> votos</li>
+      <% end %>
+    </ul>
+  <%end%>
+</body>

@@ -1,0 +1,25 @@
+<body>
+    <h1>Editar Template<h1>
+    
+    <h2>Editar Questões</h2>
+    <% @template.questaos.each do |questao|%>
+        <% form_tag(questao_path(questao), method: :patch) do%>
+            <%= label_tag :pergunta, "Título da Questão"%>
+            <%= text_field_tag :pergunta, value = "#{questao.pergunta}"%>
+
+            <h1>Editar Alternativas</h2>
+            <% questao.alternativas.each do |alternativa|%>
+                <% form_tag(alternativa_path(alternativa), method: :patch)%>
+                    <%= label_tag :texto%>
+                    <%= text_field_tag :texto, value = "#{@alternativa.texto}" %>
+                    <%= submit_tag "Confirmar edição de alternativa"%>
+                <%end%>
+                <%= button_to "Deletar essa alternativa", alternativa_path(alternativa), method: :delete %>
+                <br>
+            <%end%>
+            <%= submit_tag "Confirmar edição de questão"%>
+        <%end%>
+        <%= button_to "Deletar essa questão", questao.path(questao), method: :delete %>
+        <br>
+    <%end%>
+</body>
