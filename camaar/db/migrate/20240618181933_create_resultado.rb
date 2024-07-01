@@ -4,8 +4,10 @@ class CreateResultado < ActiveRecord::Migration[7.1]
       t.references :formulario, null: false, foreign_key: true
       t.references :template, null: false, foreign_key: true
       t.references :questao, null: false, foreign_key: true
-      t.references :alternativa, null: false, foreign_key: true
-      t.references :resposta, null: false, foreign_key: true
+      t.references :alternativa, foreign_key: true
+
+      t.integer :respostas, default: 0
+      t.text :respostas_discursivas, default: ""
 
       t.timestamps
     end

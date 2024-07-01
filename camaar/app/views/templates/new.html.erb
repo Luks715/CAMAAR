@@ -1,25 +1,39 @@
+<%= stylesheet_link_tag "edit" %>
 <body>
-  <h1>Criar Novo Template</h1>
+  <div class='edit-container'>
+    
+    <h1>Criar Novo Template</h1>
+    <div class='criar-template'>
+      <%= form_with(model: @template) do |template_form| %>
+        <%= template_form.label :nome, "Nome do Template:" %>
+        <%= template_form.text_field :nome %>
 
-  <%= form_for @template, url: templates_path do |template_form| %>
-    <%= template_form.label :nome, "Nome do Template:" %>
-    <%= template_form.text_field :nome, required: true %>
+        <h2>Adicionar Questão</h2>
+        <div class='criar-questao'>
+          <%= template_form.fields_for :questaos do |questao_form| %>
+            <%= questao_form.label :pergunta, "Título da questão: " %>
+            <%= questao_form.text_field :pergunta, required: true %>
+            <%= questao_form.select :tipo_id, options_from_collection_for_select(Tipo.all, :id, :nome), prompt: "Selecione um tipo", class: 'form-control', required: true %>
 
-    <h2>Adicionar Questão</h2>
-    <%= form_for @questao, url: template_questaos_path(@template) do |questao_form| %>
-      <%= questao_form.label :pergunta, "Título da questão" %>
-      <%= questao_form.text_field :pergunta, required: true %>
+            <h3>Adicionar Alternativas</h3>
+            <div class='criar-alternativas'>
+              <%= questao_form.fields_for :alternativas do |alternativa_form| %>
+                <%= alternativa_form.label :texto, "Alternativa: " %>
+                <%= alternativa_form.text_field :texto, required: true %>
 
-      <%= form_for @alternativa, url: template_questao_alternativas_path(@template, @questao) do |alternativa_form| %>
-        <%= alternativa_form.label :texto, "Alternativa da questão" %>
-        <%= alternativa_form.text_field :texto, required: true%>
+                <%= alternativa_form.submit "Adicionar alternativa", class: 'btn btn-primary' %>
+              <% end %>
+            </div>
 
-        <%= questao_form.submit "Adicionar Alternativa" %>
-      <%end%>
+            <%= questao_form.submit "Adicionar Questão", class: 'btn btn-primary' %>
+          <% end %>
+        </div>
 
-      <%= questao_form.submit "Adicionar Questão" %>
-    <% end %>
-
-    <%= template_form.submit "Criar Template" %>
-  <% end %>
+        <%= template_form.submit "Criar Template", class: 'btn btn-success' %>
+      <% end %>
+    </div>
+    <div class='buttons'>
+      <%= link_to "Voltar para Home Docente", home_docente_path, class: "btn btn-secondary" %>
+    </div>
+  </div>
 </body>

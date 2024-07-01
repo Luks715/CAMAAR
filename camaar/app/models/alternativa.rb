@@ -1,5 +1,5 @@
 class Alternativa < ApplicationRecord
-  belongs_to :questaos
+  belongs_to :questao
   has_one :resposta
   has_and_belongs_to_many :resultados, join_table: 'resultados'
 

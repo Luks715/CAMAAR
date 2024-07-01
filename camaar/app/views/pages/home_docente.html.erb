@@ -33,15 +33,15 @@
           <% @templates.each do |template| %>
             <div class="templates-textbox">
               <div class="templates-name"><%= template.nome.capitalize %></div>
-              <div class="semester">Semestre</div> 
-              <div class="professor"><%= template.docente.nome %></div> 
+             <div class="semester"><%= FormulariosTurma.find_by(formulario: Formulario.find_by(template: template)).turma.semestre %></div>
+              <div class="professor"><%= template.docente.user.nome %></div> 
             </div>
             <div class="templates-buttonbox">
-              <div class="edit-button">
-                <%= link_to "Editar", edit_template_path(template), class: 'edit-button' %>
+              <div>
+                <%= link_to "", edit_template_path(template), class:"edit-button" %>
               </div>
-              <div class="trash-button">
-                <%= link_to "Excluir", template_path(template), method: :delete, data: { confirm: 'Tem certeza?' }, class: 'trash-button' %>
+              <div>
+                <%= link_to "", template_path(template), method: :delete, data: { confirm: 'Tem certeza?' }, class:"trash-button" %>
               </div>
             </div>
           <% end %>
@@ -57,7 +57,7 @@
     <div class="management-contents" id="managementContents"  style="display: none;">
       <div class="button-box">
         <button type="button" class="button" id="btnImportarDados">Importar dados</button>
-
+        <button type="button" class="button" id="btnAddQuestao">Adicionar Questão</button>
         <button type="button" class="button" id="btnCriarFormularios">Criar Formulários</button>
         <button type="button" class="button" id="btnVerResultados">Resultados</button>
       </div>
@@ -88,49 +88,51 @@
         <% end %>
       </div>
 
+      <div class="editor-box" id="AdicionarQuestao" style="display: none;">
+        
+      </div>
+
       <div class="editor-box" id="CriarFormularios" style="display: none;">
-        <form class="template-selector-form">
+        <%= form_with url: formularios_path, method: :post, local: true do |f| %>
           <label>Template:
-            <select class="template-selector" name="template">
-              <%@templates.each do |template|%>
-                <option value="template"> template.nome</option>
-              <%end%>
-            </select>
+            <%= f.select :template_id, options_from_collection_for_select(@templates, :id, :nome) %>
           </label>
-        </form>
-
-        <table>
-          <tr>
-            <th style="width: 25%; padding: 10px;">Turma</th>
-            <th style="width: 25%; padding: 10px;">Data de Término</th>
-            <th style="width: 25%; padding: 10px;">Semestre</th>
-            <th style="width: 25%; padding: 10px;">Código</th>
-          </tr>
-
-          <%@turmas.each do |turma|%>
+          <br>
+          <label>Nome do Formulário:
+            <%= f.text_field :nome %>
+          </label>
+          <br>
+          <table>
             <tr>
-              <td>
-                <form><input type="checkbox" name="checked"></form>
-              </td>
-
-              <td>turma.nome</td>
-              <td><input type="date" name="data_termino"></td>
-              <td>turma.semestre</td>
-              <td>turma.class_code</td>
+              <th style="width: 10%; padding: 5px;"></th>
+              <th style="width: 22,5%; padding: 10px;">Disciplina</th>
+              <th style="width: 22,5%; padding: 10px;">Data de Término</th>
+              <th style="width: 22,5%; padding: 10px;">Semestre</th>
+              <th style="width: 22,5%; padding: 10px;">Class Code</th>
             </tr>
-          <%end%>
-        </table>
 
-        <button class="send-template-button">Enviar</button>
+            <% @turmas.each do |turma| %>
+              <tr>
+                <td><%= check_box_tag "formularios[turma_ids][]", turma.id %></td>
+                <td><%= turma.codigo %></td>
+                <td><%= f.date_field :data_termino %></td>
+                <td><%= turma.semestre %></td>
+                <td><%= turma.class_code %></td>
+              </tr>
+            <% end %>
+          </table>
+
+          <%= f.submit "Criar", class: "send-template-button" %>
+        <% end %>
       </div>
 
       <div class="editor-box" id="VerResultados" style="display: none;">
         <form class="template-selector-form">
           <label>Classes:
-            <select class="template-selector" name="template">
-              <%@turmas.each do |turma|%>
-                <option value="<%= turma.id %>"> turma.nome</option>
-              <%end%>
+            <select class="template-selector" id="classSelector" name="template">
+              <% @turmas.each do |turma| %>
+                <option value="<%= turma.id %>"><%= turma.codigo + " - " + turma.horario %></option>
+              <% end %>
             </select>
           </label>
         </form>
@@ -142,14 +144,16 @@
             <th style="width: 33%; padding: 10px;">Template</th>
           </tr>
 
-          <%@formularios.each do |formulario|%>
+          <% @formularios.each do |formulario| %>
+            <tr>
               <td><%= link_to formulario.nome.capitalize, resultados_formulario_path(formulario) %></td>
-              <td>formulario.dataDeTermino</td>
-              <td>formulario.template</td>
+              <td><%= formulario.dataDeTermino %></td>
+              <td><%= formulario.template.nome %></td>
             </tr>
-          <%end%>
+          <% end %>
         </table>
       </div>
+
 
       </div>
     </div>
@@ -158,4 +162,5 @@
   <%= javascript_include_tag 'sign-out.js' %>
   <%= javascript_include_tag 'template-management.js' %>
   <%= javascript_include_tag 'opcoes-management.js' %>
+
 </body>

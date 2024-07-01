@@ -1,25 +1,55 @@
+<%= stylesheet_link_tag "edit" %>
 <body>
-    <h1>Editar Template<h1>
-    
-    <h2>Editar Questões</h2>
-    <% @template.questaos.each do |questao|%>
-        <% form_tag(questao_path(questao), method: :patch) do%>
-            <%= label_tag :pergunta, "Título da Questão"%>
-            <%= text_field_tag :pergunta, value = "#{questao.pergunta}"%>
+    <div class='edit-container'>
+        <div class='titulo'>
+            <%= "Editar Template: " + @template.nome%>
+        </div>
 
-            <h1>Editar Alternativas</h2>
-            <% questao.alternativas.each do |alternativa|%>
-                <% form_tag(alternativa_path(alternativa), method: :patch)%>
-                    <%= label_tag :texto%>
-                    <%= text_field_tag :texto, value = "#{@alternativa.texto}" %>
-                    <%= submit_tag "Confirmar edição de alternativa"%>
-                <%end%>
-                <%= button_to "Deletar essa alternativa", alternativa_path(alternativa), method: :delete %>
-                <br>
-            <%end%>
-            <%= submit_tag "Confirmar edição de questão"%>
-        <%end%>
-        <%= button_to "Deletar essa questão", questao.path(questao), method: :delete %>
-        <br>
-    <%end%>
+        <div class='questaos-container'>
+            <h2>Editar Questões</h2>
+            <% @template.questaos.each do |questao| %>
+                <div class='questao'>
+                    <%= form_tag(template_questao_path(@template, questao), method: :patch) do %>
+                        <div class='questao-pergunta'>
+                            <%= label_tag :pergunta, "Título da Questão" %>
+                            <%= text_field_tag :pergunta, questao.pergunta, class:'pergunta'%>
+                        </div>
+        
+                        <h3>Editar Alternativas</h3>
+                        <div class='alternativas-container'>
+                            <% questao.alternativas.each do |alternativa| %>
+                                <div class='alternativa'>
+                                    <%= form_tag(template_questao_alternativa_path(@template, questao, alternativa), method: :patch) do %>
+                                        <%= text_field_tag :texto, alternativa.texto %>
+                                    <% end %>
+                                </div>
+                            <% end %>
+                        </div>
+                        <%= button_to "Deletar", template_questao_path(@template, questao), method: :delete, class: "delete-button" %>
+                    <% end %>
+                </div>
+            <% end %>
+        </div>
+    <div>
+    <div class='criar-container'>
+        <h2>Adicionar Questão</h2>
+        <div class='questao'>
+            <%= form_tag(template_questaos_path(@template), method: :post) do %>
+                <%= label_tag :tipo_id, "Tipo da Questão" %>
+                <%= select_tag :tipo_id, options_from_collection_for_select(Tipo.all, :id, :nome), prompt: "Selecione um tipo", class: 'form-control', required: true %>
+
+                <div class='questao-pergunta'>
+                    <%= label_tag :pergunta, "Título da Questão" %>
+                    <%= text_field_tag :pergunta %>
+                </div>
+            
+                <%= submit_tag "Adicionar Questão", class: 'btn btn-primary' %>
+            <% end %>
+        </div>
+    </div>
+    <div class='buttons'>
+        <%= button_to "Confirmar Alteração no Template", template_path(@template), method: :patch %>
+
+        <%= link_to "Voltar para Home Docente", home_docente_path %>
+    </div>
 </body>

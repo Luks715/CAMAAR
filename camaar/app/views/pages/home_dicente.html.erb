@@ -28,12 +28,12 @@
     <div class="assessments-container">
       <% @turmas.each do |turma| %>
         <% turma.formularios.each do |formulario| %>
-          <% if Date.today < formulario.dataDeTermino && !formulario.resultados.key?(current_user.nome)%>
+          <% if Date.today < formulario.dataDeTermino && !formulario.respondentes.include?(current_user.nome)%>
             <%= link_to responder_formulario_path(formulario) do %>
               <div class="assessments-box">
-                <div class="subject-name"><%= turma.materia %></div>
-                <div class="semester"><%= turma.semestre %></div>
-                <div class="professor"><%= turma.docente %></div>
+                <div class="subject-name"><%= formulario.nome %></div>
+                <div class="semester"><%= turma.disciplina.nome %></div>
+                <div class="professor"><%= turma.docente.user.nome %></div>
               </div>
             <% end %>
           <% end %>

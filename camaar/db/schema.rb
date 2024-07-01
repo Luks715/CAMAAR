@@ -47,6 +47,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_19_210943) do
   create_table "formularios", force: :cascade do |t|
     t.date "dataDeTermino", null: false
     t.string "nome", null: false
+    t.string "respondentes"
     t.integer "docente_id", null: false
     t.integer "template_id", null: false
     t.integer "turma_id", null: false
@@ -76,28 +77,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_19_210943) do
     t.index ["tipo_id"], name: "index_questaos_on_tipo_id"
   end
 
-  create_table "respostas", force: :cascade do |t|
-    t.integer "resultado_id", null: false
-    t.integer "questao_id", null: false
-    t.text "conteudo"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["questao_id"], name: "index_respostas_on_questao_id"
-    t.index ["resultado_id"], name: "index_respostas_on_resultado_id"
-  end
-
   create_table "resultados", force: :cascade do |t|
     t.integer "formulario_id", null: false
     t.integer "template_id", null: false
     t.integer "questao_id", null: false
-    t.integer "alternativa_id", null: false
-    t.integer "resposta_id", null: false
+    t.integer "alternativa_id"
+    t.integer "respostas", default: 0
+    t.text "respostas_discursivas", default: ""
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["alternativa_id"], name: "index_resultados_on_alternativa_id"
     t.index ["formulario_id"], name: "index_resultados_on_formulario_id"
     t.index ["questao_id"], name: "index_resultados_on_questao_id"
-    t.index ["resposta_id"], name: "index_resultados_on_resposta_id"
     t.index ["template_id"], name: "index_resultados_on_template_id"
   end
 
@@ -170,12 +161,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_19_210943) do
   add_foreign_key "formularios_turmas", "turmas"
   add_foreign_key "questaos", "templates"
   add_foreign_key "questaos", "tipos"
-  add_foreign_key "respostas", "questaos"
-  add_foreign_key "respostas", "resultados"
   add_foreign_key "resultados", "alternativas"
   add_foreign_key "resultados", "formularios"
   add_foreign_key "resultados", "questaos"
-  add_foreign_key "resultados", "resposta", column: "resposta_id"
   add_foreign_key "resultados", "templates"
   add_foreign_key "templates", "docentes"
   add_foreign_key "turmas", "disciplinas"

@@ -1,17 +1,32 @@
 <body>
-  <%@template = @formulario.template%>
+  <% @template = @formulario.template %>
   <% @resultados = Resultado.where(formulario: @formulario) %>
 
   <h1>Resultados do Formulário <%= @formulario.nome %></h1>
-  <h1> <%= Template: @template.nome %></h1>
+  <h1>Template: <%= @template.nome %></h1>
 
-  <% @template.questaos.each do |questao|%>
+  <% @template.questaos.each do |questao| %>
     <h2><%= questao.pergunta %></h2>
-    <ul>
-      <% questao.alternativas.each do |alternativa| %>
-         <% resultado = @resultados.find { |r| r.alternativa_id == alternativa.id } %>
-        <li><%= alternativa.texto %> - Resultados: <%= resultado.present? ? resultado.resposta.quantidade_de_alunos : 0 %> votos</li>
-      <% end %>
-    </ul>
-  <%end%>
+    <% if !questao.tipo.discursiva? %>
+      <ul>
+        <% questao.alternativas.each do |alternativa| %>
+          <% resultado = @resultados.find_by(formulario: @formulario, template: @template, questao: questao, alternativa: alternativa) %>
+          <li><%= alternativa.texto %> - Resultados: <%= resultado.respostas %> votos</li>
+        <% end %>
+      </ul>
+    <% else %>
+      <div>
+        <% resultado_discursivo = @resultados.find_by(formulario: @formulario, template: @template, questao: questao) %>
+        <% if resultado_discursivo.present? %>
+          <% resultado_discursivo.respostas_discursivas.split("#").each do |discursiva| %>
+            <div>
+              <%= discursiva %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <%= link_to 'Voltar', home_docente_path, class: 'btn btn-primary' %>
 </body>

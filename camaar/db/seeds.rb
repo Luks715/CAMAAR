@@ -67,7 +67,7 @@ end
     docente: Docente.find_by(user_id: User.find_by(nome: "administrador").id)
   )
 
-  fulano = Dicente.find_by(user_id: User.find_by(nome: "fulano").id)
+  fulano = Dicente.find_by(user_id: User.find_by(nome: "fulano"))
 
   fulano.turmas << turma1
   turma1.dicentes << fulano
@@ -77,32 +77,38 @@ end
     docente: Docente.find_by(user_id: User.find_by(nome: "administrador")),
     questaos_attributes: [
       {
-        pergunta: 'Você confirma?',
+        pergunta: 'você confirma?',
         tipo: Tipo.find_by(nome: 'confirmação'),
         alternativas_attributes: [
-          { texto: 'Confirmo' },
+          {texto: "confirmo"}
         ]
       },
       {
-        pergunta: 'Esta é uma questão de múltipla escolha??',
+        pergunta: 'Esta é uma questão de múltipla escolha?',
         tipo: Tipo.find_by(nome: 'múltipla escolha'),
         alternativas_attributes: [
-          { texto: 'sim' },
-          { texto: 'si' },
-          { texto: 'oui' },
-          { texto: 'yes' }
-        ]
-      }
-    ]
-  )
+          {texto: "sim"},
+          {texto: "si"},
+          {texto: "yes"},
+          {texto: "oui"}
+          ]
+        },
+        {
+          pergunta: 'qual a sua opinião?',
+          tipo: Tipo.find_by(nome: 'aberta')
+        }
+      ]
+    )
 
-  provasDerivadas = Formulario.find_or_create_by(
-    nome: 'Prova de Derivadas',
-    docente_id: Docente.find_by(user_id: User.find_by(nome: "administrador")).id,
-    turma_id: turma1.id,
-    template_id: template1.id,
-    dataDeTermino: Date.new(2024, 7, 1)
-  )
+    provasDerivadas = Formulario.find_or_create_by(
+      nome: 'Prova de Derivadas',
+      docente_id: Docente.find_by(user_id: User.find_by(nome: "administrador")).id,
+      turma_id: turma1.id,
+      template_id: template1.id,
+      dataDeTermino: Date.new(2024, 7, 1),
+      respondentes: "aluno, "
+    )
+
   provasDerivadas.turmas << turma1
   turma1.formularios << provasDerivadas
 

@@ -7,8 +7,8 @@
 
 .button-box{
     width: 462px;
-    height: 655px;
-    border-radius: 8px;
+    height: 500px;
+    padding: 10px;
     background-color: #FFFFFF;
     display: flex;
     justify-content: center;

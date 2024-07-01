@@ -11,6 +11,7 @@ class FormulariosController < ApplicationController
 
   def responder
     @formulario = Formulario.find(params[:id])
+    @template = @formulario.template
   end
 
   # GET /formularios/new
@@ -29,6 +30,7 @@ class FormulariosController < ApplicationController
     @formulario = Formulario.new(formulario_params)
 
     if @formulario.save
+      criar_resultados_formulario(@formulario)
       redirect_to @formulario, notice: 'Formulário foi criado com sucesso.'
     else
       @templates = Template.all
@@ -57,6 +59,22 @@ class FormulariosController < ApplicationController
   private
     # Only allow a list of trusted parameters through.
     def formulario_params
-      params.require(:formulario).permit(:nome, :dataDeTermino, :template_id)
+      params.require(:formulario).permit(:dataDeTermino, :nome, :respondentes, :template_id)
+    end
+
+    def criar_resultados_formulario(formulario)
+      template = formulario.template
+      template.questaos.each do |questao|
+        questao.alternativas.each do |alternativa|
+          Resultado.create!(
+            formulario: formulario,
+            template: template,
+            questao: questao,
+            alternativa: alternativa,
+            respostas: 0,
+            respostas_discursivas: ""
+          )
+        end
+      end
     end
 end

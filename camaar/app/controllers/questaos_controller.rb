@@ -19,6 +19,7 @@ class QuestaosController < ApplicationController
 
   # GET /questaos/1/edit
   def edit
+
   end
 
   # POST /questaos
@@ -43,8 +44,15 @@ class QuestaosController < ApplicationController
 
   # DELETE /questaos/1
   def destroy
-    @questao.destroy
-    redirect_to questaos_url, notice: 'Questao was successfully destroyed.'
+    @questao = Questao.find(params[:id])
+    @template = @questao.template # Para usar na reconstrução do template após a exclusão
+
+    if @questao.destroy
+      redirect_to template_path(@template), notice: 'Questão excluída com sucesso.'
+    else
+      # Lógica de tratamento caso a exclusão falhe
+      redirect_to template_path(@template), alert: 'Erro ao excluir a questão.'
+    end
   end
 
   private

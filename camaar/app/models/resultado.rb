@@ -3,5 +3,7 @@ class Resultado < ApplicationRecord
   belongs_to :template
   belongs_to :questao
   belongs_to :alternativa
-  belongs_to :resposta
+
+  validates :respostas, presence: true
+  validates :respostas_discursivas, presence: true
 end

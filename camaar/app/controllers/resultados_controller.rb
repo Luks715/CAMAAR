@@ -2,7 +2,6 @@ class ResultadosController < ApplicationController
   def new
     @formulario = Formulario.find(params[:formulario_id])
     @resultado = Resultado.new(formulario: @formulario)
-    @resultado.respostas.build # Constrói as respostas vazias para todas as questões do formulário
   end
 
   def create
@@ -21,6 +20,6 @@ class ResultadosController < ApplicationController
   private
 
   def resultado_params
-    params.require(:resultado).permit(:dicente_id, :formulario_id, respostas_attributes: [:id, :questao_id, :conteudo])
+    params.require(:resultado).permit(:formulario_id, :template_id, :questao_id, :alternativa_id, :quantidade_respostas, :respostas_discursivas)
   end
 end

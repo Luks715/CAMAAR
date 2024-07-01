@@ -3,6 +3,7 @@ class CreateFormulario < ActiveRecord::Migration[7.1]
     create_table :formularios do |t|
       t.date :dataDeTermino, null: false
       t.string :nome, null: false
+      t.string :respondentes
 
       t.references :docente, null: false, foreign_key: true
       t.references :template, null: false, foreign_key: true

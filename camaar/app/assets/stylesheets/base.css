@@ -45,7 +45,7 @@ body {
 .search-bar {
     display: flex;
     align-items: center;
-    width: 271px;
+    width: 275px;
     height: 40px;
     margin-right: 51px; /* Adjusted for spacing between search bar and user button */
     margin-left: auto; /* Aligns the search bar to the right of left-frame */
@@ -57,7 +57,7 @@ body {
     height: 100%;
     border-radius: 47px;
     border: 1px solid #ccc;
-    padding-left: 40px; /* To make space for the icon */
+    padding-left: 20px; /* To make space for the icon */
 }
 
 .search-icon {

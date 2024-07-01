@@ -7,8 +7,8 @@
 }
 .templates-box {
     display: flex;
-    width: 278px;
-    height: 128px;
+    width: 280px;
+    height: 140px;
     border-radius: 8px;
     margin: 25px 25px;
     background-color: #FFFFFF;
@@ -19,8 +19,8 @@
 
 .add-templates-box {
     display: flex;
-    width: 278px;
-    height: 128px;
+    width: 280px;
+    height: 140px;
     border-radius: 8px;
     margin: 25px 25px;
     background-color: #FFFFFF;

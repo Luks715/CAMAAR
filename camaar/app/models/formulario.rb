@@ -7,6 +7,7 @@ class Formulario < ApplicationRecord
 
   validates :dataDeTermino, presence: true
   validates :nome, presence: true
+  validates :respondentes, presence: true
 
   validate :dataDeTermino_in_future
 

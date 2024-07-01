@@ -4,6 +4,7 @@ class CreateTipo < ActiveRecord::Migration[7.1]
       t.string :nome, null: false
       t.integer :numeroDeAlternativas, null: false
       t.string :discursiva, null: false
+
       t.timestamps
     end
   end
