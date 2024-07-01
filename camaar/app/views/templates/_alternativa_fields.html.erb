@@ -1,0 +1,10 @@
+<div class="nested-fields">
+  <%= f.hidden_field :_destroy %>
+  <div class="alternativa">
+    <%= f.label :texto, "Alternativa: " %>
+    <%= f.text_field :texto %>
+  </div>
+  <div>
+    <%= link_to "Remover alternativa", '#', class: "remove_fields" %>
+  </div>
+</div>

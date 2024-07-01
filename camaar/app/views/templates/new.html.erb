@@ -1,34 +1,23 @@
 <%= stylesheet_link_tag "edit" %>
 <body>
   <div class='edit-container'>
-    
-    <h1>Criar Novo Template</h1>
+    <div class='titulo'>
+      <%= "Criar Novo Template" %>
+    </div>
     <div class='criar-template'>
-      <%= form_with(model: @template) do |template_form| %>
+      <%= form_with model: @template, local: true do |template_form| %>
         <%= template_form.label :nome, "Nome do Template:" %>
         <%= template_form.text_field :nome %>
 
-        <h2>Adicionar Questão</h2>
+        <h2>Adicionar Questões</h2>
         <div class='criar-questao'>
-          <%= template_form.fields_for :questaos do |questao_form| %>
-            <%= questao_form.label :pergunta, "Título da questão: " %>
-            <%= questao_form.text_field :pergunta, required: true %>
-            <%= questao_form.select :tipo_id, options_from_collection_for_select(Tipo.all, :id, :nome), prompt: "Selecione um tipo", class: 'form-control', required: true %>
-
-            <h3>Adicionar Alternativas</h3>
-            <div class='criar-alternativas'>
-              <%= questao_form.fields_for :alternativas do |alternativa_form| %>
-                <%= alternativa_form.label :texto, "Alternativa: " %>
-                <%= alternativa_form.text_field :texto, required: true %>
-
-                <%= alternativa_form.submit "Adicionar alternativa", class: 'btn btn-primary' %>
-              <% end %>
-            </div>
-
-            <%= questao_form.submit "Adicionar Questão", class: 'btn btn-primary' %>
-          <% end %>
+          <fieldset>
+            <%= template_form.fields_for :questaos do |questao_form| %>
+              <%= render "questao_fields", f: questao_form %>
+            <% end %>
+          </fieldset>
+          <%= link_to_add_fields "Adicionar Questões", template_form, :questaos%>
         </div>
-
         <%= template_form.submit "Criar Template", class: 'btn btn-success' %>
       <% end %>
     </div>

@@ -5,5 +5,4 @@ class Resultado < ApplicationRecord
   belongs_to :alternativa
 
   validates :respostas, presence: true
-  validates :respostas_discursivas, presence: true
 end

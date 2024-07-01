@@ -28,6 +28,11 @@ body {
     margin-bottom: 10px;
 }
 
+.criar-questao{
+    border: 1px solid #000000;
+    padding: 10px;
+}
+
 /* Estilo para o título de questões */
 .questao h2 {
     font-size: 18px;

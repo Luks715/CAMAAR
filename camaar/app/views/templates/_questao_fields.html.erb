@@ -1,0 +1,21 @@
+<div class="nested-fields">
+    <%= f.hidden_field :destroy%>
+    <div class="questão">
+        <%= f.label :pergunta, "Título da questão: " %>
+        <%= f.text_field :pergunta%>
+        <%= f.select :tipo_id, options_from_collection_for_select(Tipo.all, :id, :nome), prompt: "Selecione um tipo", class: 'form-control', required: true %>
+    
+        <h3>Adicionar Alternativas</h3>
+        <div class='criar-alternativa'>
+            <fieldset>
+                <%= f.fields_for :alternativas do |alternativa_form| %>
+                    <%= render "alternativa_fields", f: alternativa_form %>
+                <% end %>
+                <%= link_to_add_fields "Adicionar Alternativas", f, :alternativas%>
+            </fieldset>
+        </div>
+    </div>
+    <div>
+        <%= link_to "Remover Questão", '#', class: "remove-button" %>
+    </div>
+</div>
