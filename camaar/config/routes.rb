@@ -42,6 +42,9 @@ Rails.application.routes.draw do
   end
 
   resources :templates do
+    collection do
+      get 'search'
+    end
     resources :questaos do
       resources :alternativas
     end

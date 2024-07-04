@@ -5,7 +5,7 @@
             <div class='titulo'>
                 <%= "Editar Template: " + @template.nome %>
             </div>
-            <%= form_with(model: @template, local: true, method: :patch) do |template_form| %>
+            <%= form_with model: @template, url: template_path(@template), method: :patch, local: true do |template_form| %>
                 <div class="nome-container">
                     <%= template_form.label :nome, "Nome do Template" %>
                     <%= template_form.text_field :nome, class: 'form-control' %>

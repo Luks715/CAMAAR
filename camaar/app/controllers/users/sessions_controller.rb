@@ -1,7 +1,10 @@
 class Users::SessionsController < Devise::SessionsController
   def new
-    # rota que leva para a root do programa
-    render 'devise/sessions/new'
+     # rota que leva para a root do programa
+     self.resource = resource_class.new(sign_in_params)
+     clean_up_passwords(resource)
+     yield resource if block_given?
+     render 'devise/sessions/new'
   end
 
   def create

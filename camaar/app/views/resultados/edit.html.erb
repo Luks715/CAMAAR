@@ -1,21 +1,21 @@
 <body>
     <div class="questoes-container">
         <div class="titulo"><%= @formulario.nome%></div>
-        <%= form_with model: @resultado, local: true, method: :patch do |f| %>
+        <%= form_for @resultado, local: true, method: :patch do |f| %>
             <% @template.questaos.each do |questao|%>
                 <div class="questao">
                     <h3><%= questao.pergunta%></h3>
                      <% if questao.tipo.discursiva == "true" %>
-                        <%= f.label "respostas_discursivas[#{questao.id}]", "Resposta para questão #{questao.id}" %>
-                        <%= f.text_area "respostas_discursivas[#{questao.id}]", class: "form-control", placeholder: "Digite sua resposta para a questão #{questao.id} aqui" %>
-
+                        <%= text_area_tag "respostas[discursivas][#{questao.id}]", nil, placeholder: "Digite sua resposta", id: "resposta-discursiva" %>
                      <% else %>
-                        <% questao.alternativas.each do |alternativa| %>
+                         <% questao.alternativas.each do |alternativa| %>
                             <div class="alternativa">
-                                <%= f.radio_button :alternativas_ids, alternativa.id, name: "alternativas_ids[#{questao.id}]", class: "form-check-input" %>
-                                <%= f.label :alternativas_ids, alternativa.texto, value: alternativa.id, class: "form-check-label" %>
+                                <%= f.radio_button :alternativa_id, alternativa.id, name: "respostas[alternativas_ids][#{questao.id}]", class: "form-check-input" %>
+                                <%= f.label :alternativa_id, alternativa.texto, value: alternativa.id, class: "form-check-label" %>
                             </div>
                         <% end %>
+                        <!--<%= f.label "respostas_alternativas_#{questao.id}", "Alternativas para questão #{questao.id}" %>
+                        <%= select_tag "respostas[alternativas_ids][#{questao.id}]", options_from_collection_for_select(questao.alternativas, :id, :texto), prompt: "Selecione uma alternativa", id: "resposta-alternativa" %>-->
                     <% end %>
                 </div>
             <% end %>

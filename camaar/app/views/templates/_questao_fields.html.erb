@@ -12,8 +12,7 @@
             <%= f.fields_for :alternativas do |alternativa_form| %>
                 <%= render "alternativa_fields", f: alternativa_form %>
             <% end %>
-            <%= link_to_add_fields("Adicionar Alternativa", f, :alternativas, class:'add_fields') %>
+            <%= link_to_add_fields("+", f, :alternativas, class:'add_fields') %>
         </div>
-        <%= link_to "Remover Questão", '#', class: "remove_fields" %>
     </div>
 </div>
