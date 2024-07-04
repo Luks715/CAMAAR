@@ -8,6 +8,7 @@ class TemplatesController < ApplicationController
 
   # GET /templates/1
   def show
+
   end
 
   # GET /templates/new

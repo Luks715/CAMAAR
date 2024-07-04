@@ -29,11 +29,20 @@ class ResultadosController < ApplicationController
     @template = @formulario.template
 
     @template.questaos.each do |questao|
-      if questao.tipo.discursiva
+      if questao.tipo.discursiva == "true"
         resposta_discursiva = params[:respostas_discursivas][questao.id.to_s]
         @resultado.update(respostas_discursivas: @resultado.respostas_discursivas + "###" + resposta_discursiva)
+
+      #  resultado = Resultado.find_by(
+      #    formulario: @formulario,
+      #    template: @template,
+      #    questao: questao
+      #  )
+      #  resposta_discursiva = params[:respostas_discursivas]
+
+      #  resultado.update(respostas_discursivas: resultado.respostas_discursivas + "###" + resposta_discursiva)
       else
-        alternativa_ids = params[:alternativas_ids] || []
+        alternativa_ids = params[:alternativas_ids]
         alternativa_ids.each do |id|
           resultado = Resultado.find_or_create_by(
             formulario: @formulario,
@@ -41,7 +50,7 @@ class ResultadosController < ApplicationController
             questao: questao,
             alternativa_id: id
           )
-          @resultado.update(respostas: @resultado.respostas + 1)
+          resultado.update(quantidade_respostas: resultado.quantidade_respostas + 1)
         end
       end
     end

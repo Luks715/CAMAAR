@@ -16,14 +16,14 @@
           <ul>
             <% questao.alternativas.each do |alternativa| %>
               <% @resultado = Resultado.find_by(formulario: @formulario, template: @template, questao: questao, alternativa: alternativa) %>
-              <li><%= alternativa.texto + " - Resultados: " + @resultado.respostas.to_s + " votos" %></li>
+              <li><%= alternativa.texto + " - Resultados: " + @resultado.quantidade_respostas.to_s + " votos" %></li>
             <% end %>
           </ul>
         <% else %>
           <div>
             <% @resultado_discursivo = Resultado.find_by(formulario: @formulario, template: @template, questao: questao) %>
             <% if @resultado_discursivo.present? %>
-              <% resultado_discursivo.respostas_discursivas.split("#").each do |discursiva| %>
+              <% resultado_discursivo.respostas_discursivas.split("###").each do |discursiva| %>
                 <div>
                   <%= discursiva %>
                 </div>

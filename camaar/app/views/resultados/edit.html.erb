@@ -6,16 +6,14 @@
                 <div class="questao">
                     <h3><%= questao.pergunta%></h3>
                      <% if questao.tipo.discursiva == "true" %>
-                        <%= f.text_area :respostas_discursivas, placeholder: "Digite sua resposta aqui" %>
+                        <%= f.label "respostas_discursivas[#{questao.id}]", "Resposta para questão #{questao.id}" %>
+                        <%= f.text_area "respostas_discursivas[#{questao.id}]", class: "form-control", placeholder: "Digite sua resposta para a questão #{questao.id} aqui" %>
+
                      <% else %>
                         <% questao.alternativas.each do |alternativa| %>
                             <div class="alternativa">
                                 <%= f.radio_button :alternativas_ids, alternativa.id, name: "alternativas_ids[#{questao.id}]", class: "form-check-input" %>
                                 <%= f.label :alternativas_ids, alternativa.texto, value: alternativa.id, class: "form-check-label" %>
-                                <!--<%= check_box_tag "formulario[turma_ids][]", alternativa.id %>
-                                <%= alternativa.texto%>
-                                <%= check_box_tag "alternativas_ids[]", alternativa.id, false, class: "form-check-input" %>
-                                <%= label_tag "alternativas_ids[]", alternativa.texto, class: "form-check-label" %>-->
                             </div>
                         <% end %>
                     <% end %>

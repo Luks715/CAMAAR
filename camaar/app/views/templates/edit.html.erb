@@ -31,9 +31,7 @@
                                         </div>
                                     <% end %>
                                 </div>
-                                <%= link_to "Deletar", template_questao_path(@template, questao), method: :delete, class: "delete-button" %>
-
-                                <!--<%= button_to "Deletar", template_questao_path(@template, questao), method: :delete, class: "delete-button", data: { confirm: "Tem certeza que deseja deletar esta questão?" } %>-->
+                                <%= button_to "Deletar", template_questao_path(@template, questao), method: :delete, class: "delete-button", data: { confirm: "Tem certeza que deseja deletar esta questão?" } %>
                             <% end %>
                         </div>
                     <% end %>
