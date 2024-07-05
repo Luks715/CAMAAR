@@ -109,7 +109,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_19_210943) do
   create_table "turmas", force: :cascade do |t|
     t.string "class_code", null: false
     t.string "semestre", null: false
-    t.string "horario", null: false
+    t.string "horario"
     t.string "codigo", null: false
     t.integer "disciplina_id", null: false
     t.integer "docente_id"

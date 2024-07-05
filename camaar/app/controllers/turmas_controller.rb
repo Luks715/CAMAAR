@@ -78,7 +78,6 @@ class TurmasController < ApplicationController
             horario: class_data['time'],
             disciplina: Disciplina.find_by(codigo: class_data['code'] ),
           )
-
           class_data['dicente'].each do |student_data|
             user_dicente = User.create!(
               nome: student_data['nome'],
