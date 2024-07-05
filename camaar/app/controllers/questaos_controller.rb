@@ -27,7 +27,8 @@ class QuestaosController < ApplicationController
     @questao = @template.questaos.build(questao_params)
 
     if @questao.save
-      redirect_to @questao, notice: 'Questao was successfully created.'
+      #redirect_to @questao, notice: 'Questao was successfully created.'
+      redirect_to edit_template_path(@template)
     else
       render :new
     end
@@ -44,13 +45,10 @@ class QuestaosController < ApplicationController
 
   # DELETE /questaos/1
   def destroy
-    @template = @questao.template # Para usar na reconstrução do template após a exclusão
-
     if @questao.destroy
-      redirect_to template_path(@template), notice: 'Questão excluída com sucesso.'
+      redirect_to edit_template_path(@template), notice: 'Questão excluída com sucesso.'
     else
-      # Lógica de tratamento caso a exclusão falhe
-      redirect_to template_path(@template), alert: 'Erro ao excluir a questão.'
+      redirect_to edit_template_path(@template), alert: 'Erro ao excluir a questão.'
     end
   end
 

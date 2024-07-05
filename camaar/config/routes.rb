@@ -41,12 +41,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :templates do
+  resources :templates, only: [:new, :create, :edit, :update, :destroy] do
     collection do
       get 'search'
     end
-    resources :questaos do
-      resources :alternativas
+    resources :questaos, only: [:new, :create, :edit, :update, :destroy] do
+      resources :alternativas, only: [:new, :create, :edit, :update, :destroy]
     end
   end
 

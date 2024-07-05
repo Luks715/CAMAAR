@@ -9,7 +9,7 @@
         <%= template_form.label :nome, "Nome do Template:" %>
         <%= template_form.text_field :nome %>
 
-        <h2>Adicionar Questões</h2>
+        <!--<h2>Adicionar Questões</h2>
         <div class='criar-questao'>
           <%= template_form.fields_for :questaos do |questao_form| %>
             <%= render "questao_fields", f: questao_form %>
@@ -18,7 +18,7 @@
             <%= link_to_add_fields("+", template_form, :questaos, class:'add_fields') %>
             <%= link_to "", '#', class: "remove_fields", class: "trash-button" %>
           </div>
-        </div>
+        </div>-->
 
         <div class='buttons'>
           <%= template_form.submit "Criar Template", class: 'btn btn-success' %>
