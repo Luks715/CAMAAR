@@ -20,6 +20,10 @@ body {
     transform: translateX(-50%);
     z-index: 2;
 }
+.titulo {
+    margin: 0 auto 10px auto;
+    font-size: 20px;
+}
 
 .left-frame {
     display: flex;
